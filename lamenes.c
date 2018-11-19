@@ -597,7 +597,7 @@ quit_emulation()
 	exit(0);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	/* cpu speed */
 	unsigned int NTSC_SPEED = 1789725;
@@ -626,7 +626,7 @@ int main(void)
 	/* 256b sprite memory */
 	sprite_memory = (unsigned char *)malloc(256);
 
-	if(analyze_header("rom.nes") == 1)
+	if(analyze_header(argv[1]) == 1)
 	{
 		free(sprite_memory);
 		free(ppu_memory);
@@ -643,7 +643,7 @@ int main(void)
 
 	printf("[*] mapper: %d found!\n",MAPPER);*/
 
-	if (load_rom("rom.nes") == 1)
+	if (load_rom(argv[1]) == 1)
 	{
 		free(sprite_memory);
 		free(ppu_memory);
@@ -678,8 +678,8 @@ int main(void)
 		width = 256;
 	}
 
-	sdl_screen_height = height * scale;
-	sdl_screen_width = width * scale;
+	sdl_screen_height = 600;
+	sdl_screen_width = 800;
 
 	/*if(pal == 1) {
 		printf("[*] PAL_SPEED: %d\n",PAL_SPEED);

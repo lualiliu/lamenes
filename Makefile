@@ -1,52 +1,17 @@
-3DODEV	= C:/3DODev/
-ARMDEV	= C:/arm250/
+LAMENES		= lamenes.c lame6502/lame6502.c lame6502/disas.c lame6502/debugger.c lib/str_chrchk.c lib/str_cut.c sdl_functions.c romloader.c ppu.c input.c lib/str_replace.c
+CC		= gcc
+OBJ_FLAG	= -Os -std=gnu90 -DPC -fomit-frame-pointer -Wall -I/usr/include/SDL -lSDL ;
 
-# Project specific settings
-NAME	= LaunchMe
-STACKSIZE = 4096
-BANNER	= Banner.bmp
-FILESYSTEM	= CD
+lamenes:	$(LAMENES)
+		$(CC) $(LAMENES) $(OBJ_FLAG)
+		strip a.out
+		mv a.out lamenes
 
-CC		= $(ARMDEV)bin/armcc
-AS 		= $(ARMDEV)bin/armas
-LD		= $(ARMDEV)bin/armlink
-RM		= $(3DODEV)bin/rm
-MODBIN	= $(3DODEV)bin/modbin
-MAKEBANNER	= $(3DODEV)bin/MakeBanner
+install:	$(LAMENES)
+		cp lamenes /usr/local/bin
 
-CCFLAGS = -Wd -bi -apcs /swst/fp -cpu ARM60 $(INCPATH)
-ASFLAGS =
-INCPATH	= -I$(3DODEV)includes -I./3DO -I./lame6502 -I. -I./lib
-LDFLAGS = -reloc -nodebug -remove -ro-base 0x80 
-LIBPATH	= $(3DODEV)libs/
-STARTUP = $(LIBPATH)cstartup.o
-LIBS 	= $(LIBPATH)exampleslib.lib $(LIBPATH)Lib3DO.lib $(LIBPATH)audio.lib $(LIBPATH)music.lib $(LIBPATH)operamath.lib \
-	$(LIBPATH)filesystem.lib $(LIBPATH)graphics.lib $(LIBPATH)input.lib $(LIBPATH)clib.lib
-ARMLIB	= $(ARMDEV)lib
-ARMINC	= $(ARMDEV)inc
+uninstall:	$(LAMENES)
+		rm /usr/local/bin/lamenes
 
-SRC_S		= $(wildcard *.s)
-SRC_C		= $(wildcard *.c) $(wildcard lame6502/*.c) $(wildcard 3DO/*.c) $(wildcard lib/*.c)
-
-OBJ	+= $(SRC_S:.s=.o)
-OBJ	+= $(SRC_C:.c=.o)
-
-all: $(NAME)
-
-$(NAME): $(OBJ) BannerScreen
-	$(LD) -dupok -o $(FILESYSTEM)/$(NAME). $(LDFLAGS) $(STARTUP) $(LIBS) $(OBJ)
-	$(MODBIN) $(STACKSIZE) CD/$(NAME)
-
-%.o: %.c
-	$(CC) $(INCPATH) $(CCFLAGS) -c $< -o $@
-
-%.o: %.s
-	$(AS) $(INCPATH) $(ASFLAGS) $< -o $@
-	
-BannerScreen: $(BANNER)
-	$(MAKEBANNER) $(BANNER) $(FILESYSTEM)/BannerScreen
-
-clean:
-	$(RM) -f $(OBJ)
-	$(RM) -f $(FILESYSTEM)/$(NAME)
-	$(RM) -f $(FILESYSTEM)/BannerScreen
+clean:		$(LAMENES)
+		rm -f lamenes lamenes.core core.*
