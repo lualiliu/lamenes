@@ -678,8 +678,8 @@ int main(int argc, char *argv[])
 		width = 256;
 	}
 
-	sdl_screen_height = 600;
-	sdl_screen_width = 800;
+	sdl_screen_height = 240;
+	sdl_screen_width = 320;
 
 	/*if(pal == 1) {
 		printf("[*] PAL_SPEED: %d\n",PAL_SPEED);

@@ -73,6 +73,7 @@ void screen_unlock()
 void init_SDL(int type, int fullscreen)
 {
 	#ifdef PC
+		SDL_ShowCursor(0);
 		SDL_Init(SDL_INIT_VIDEO);
 		screen = SDL_SetVideoMode(sdl_screen_width, sdl_screen_height, 16, SDL_SWSURFACE);
 		SDL_FillRect(screen, NULL, 0);
@@ -112,15 +113,15 @@ void check_SDL_event()
 				set_input((char *) 4);
 				break;
 
-				case SDLK_LCTRL:
+				case SDLK_RETURN:
 				set_input((char *) 5);
 				break;
 
-				case SDLK_LSHIFT:
+				case SDLK_ESCAPE:
 				set_input((char *) 6);
 				break;
 
-				case SDLK_p:
+				case SDLK_x:
 				if(pause_emulation) 
 				{
 					printf("[*] LameNES continue emulation!\n");
@@ -134,11 +135,11 @@ void check_SDL_event()
 				}
 				break;
 
-				case SDLK_x:
+				case SDLK_a:
 				set_input((char *) 7);
 				break;
 
-				case SDLK_z:
+				case SDLK_b:
 				set_input((char *) 8);
 				break;
 
@@ -146,7 +147,7 @@ void check_SDL_event()
 				quit_emulation();
 				break;
 
-				case SDLK_ESCAPE:
+				case SDLK_e:
 				CPU_is_running = 0;
 				break;
 
@@ -204,19 +205,19 @@ void check_SDL_event()
 				clear_input((char *) 4);
 				break;
 
-				case SDLK_LCTRL:
+				case SDLK_RETURN:
 				clear_input((char *) 5);
 				break;
 
-				case SDLK_LSHIFT:
+				case SDLK_ESCAPE:
 				clear_input((char *) 6);
 				break;
 
-				case SDLK_x:
+				case SDLK_a:
 				clear_input((char *) 7);
 				break;
 
-				case SDLK_z:
+				case SDLK_b:
 				clear_input((char *) 8);
 				break;
 
