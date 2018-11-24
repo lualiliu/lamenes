@@ -73,8 +73,9 @@ void screen_unlock()
 void init_SDL(int type, int fullscreen)
 {
 	#ifdef PC
-		SDL_ShowCursor(0);
+		
 		SDL_Init(SDL_INIT_VIDEO);
+		SDL_ShowCursor(0);
 		screen = SDL_SetVideoMode(sdl_screen_width, sdl_screen_height, 16, SDL_SWSURFACE);
 		SDL_FillRect(screen, NULL, 0);
 		SDL_Flip(screen);
@@ -94,7 +95,8 @@ void init_SDL(int type, int fullscreen)
 void check_SDL_event()
 {
 #ifdef PC
-	while(SDL_PollEvent(&event)) {
+	Uint8* keys;
+	while(SDL_PollEvent(&event)) {	
 		if(event.type == SDL_KEYDOWN) {
 			switch(event.key.keysym.sym) {
 				case SDLK_DOWN:
@@ -135,6 +137,10 @@ void check_SDL_event()
 				}
 				break;
 
+				case SDLK_y:
+				set_input((char *) 7);
+				break;
+
 				case SDLK_a:
 				set_input((char *) 7);
 				break;
@@ -142,11 +148,11 @@ void check_SDL_event()
 				case SDLK_b:
 				set_input((char *) 8);
 				break;
-
-				case SDLK_q:
+				/*
+				case (SDLK_RETURN && SDLK_ESCAPE):
 				quit_emulation();
 				break;
-
+				*/
 				case SDLK_e:
 				CPU_is_running = 0;
 				break;
@@ -213,6 +219,10 @@ void check_SDL_event()
 				clear_input((char *) 6);
 				break;
 
+				case SDLK_y:
+				clear_input((char *) 7);
+				break;
+
 				case SDLK_a:
 				clear_input((char *) 7);
 				break;
@@ -225,7 +235,13 @@ void check_SDL_event()
 				break;
 			}
 		}
+		
 	}
+	keys = SDL_GetKeyState(NULL);
+	if ((keys[SDLK_ESCAPE] == SDL_PRESSED) && (keys[SDLK_RETURN] == SDL_PRESSED )) { 
+		quit_emulation();
+	}
+
 #else	
 	uint32	gButtons;
 	unsigned char i;
